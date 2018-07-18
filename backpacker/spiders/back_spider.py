@@ -51,15 +51,15 @@ class BackSpiderSpider(scrapy.Spider):
                 #post_last_reply = list(map(lambda s: s.strip(),post_last_reply))
                 #yield{'post_last_reply':post_last_reply}
 
-            #forwarded to every single post in a page
-            yield Request(url = abs_url, callback= self.parse_thread_content)
+                #forwarded to every single post in a page
+                yield Request(url = abs_url, callback= self.parse_thread_content)
         
         #click to next page
         next_btn_url = response.xpath('//a[@rel="next"]/@href').extract_first()
         absolute_next_btn_url = response.urljoin(next_btn_url)
         
         #recursive function used to loop through all pages and send requests for each post
-        # yield Request(url = absolute_next_btn_url, callback= self.parse)
+        yield Request(url = absolute_next_btn_url, callback= self.parse)
 
 
     #post content crawling
@@ -68,7 +68,7 @@ class BackSpiderSpider(scrapy.Spider):
         # # scrap post title only when it is in page 1 of the post
         if response.xpath('//a[@rel="prev"]//text()').extract_first() is None:
             post_title = response.xpath('//h1//text()').extract_first().strip()
-            
+
             #yield{'post_title': post_title}
 
             #create an item object whenever a new post is entered
@@ -95,7 +95,7 @@ class BackSpiderSpider(scrapy.Spider):
 
             #append new reply content to the global list, "content"
             self.content.append(content_tem)
-            reply_created_on = response.xpath('.//td[starts-with(@id,"td_post_")]//div[@class = "smallfont"]/text()').extract()[5].strip()   
+            #reply_created_on = response.xpath('.//td[starts-with(@id,"td_post_")]//div[@class = "smallfont"]/text()').extract()[5].strip()   
             # yield{'reply_created_on':reply_created_on,
             #       'content':content}
             
