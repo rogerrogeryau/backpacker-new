@@ -13,9 +13,11 @@ class BackpackerItem(scrapy.Item):
     # name = scrapy.Field()
 
     #code here
-    #post_title = scrapy.Field()
+    post_title = scrapy.Field()
+    content = scrapy.Field()
+    #num_of_view = scrapy.Field()
 
 
 
-    pass
+    #pass
     
